@@ -1,0 +1,102 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: Tahoma, Monaco, Consolas, 'Courier New';
+	font-size: 1em;
+	margin: 10px;
+}
+
+table td, table th {
+	table-layout: fixed;
+	overflow: hidden;
+	height: 5px;
+	padding: 3px;
+	border: 1px solid;
+}
+
+table {
+	width: 300px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.greyBtn {
+	margin: 5px 10px 10px 0px;
+	height: 25px;
+	font-weight: bold;
+	border: 1px solid;
+	background-color: #e6e6e6;
+	float: left;
+}
+
+.greyBtn:hover {
+	background-color: #fff;
+}
+
+#columnMstr, #dataGrid {
+	width: 350px;
+}
+
+#addColumn {
+	width: 280px;
+	padding-left: 15px;
+}
+
+#addColumn table td, #addColumn table th {
+	border: 0px;
+	margin: 5px;
+	width: 80px;
+}
+
+.addForm-style select, .addForm-style input, .editForm-style select,
+	.editForm-style input {
+	padding: 8px;
+	width: 120px;
+	border: 1px solid;
+	border-radius: 0px;
+}
+
+.addForm-style select, .editForm-style select {
+	width: 120px;
+	background: #fff
+		url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif")
+		no-repeat 90% 50%;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.editForm-style select {
+	width: 100px;	
+}
+
+.addForm-style select:focus, .addForm-style input:focus, .editForm-style select:focus,
+	.editForm-style input:focus {
+	outline: none;
+}
+
+
+.editForm-style select, .editForm-style input {
+	padding: 2px;
+	border: 1px solid #aeaeae;
+	border-radius: 0px;
+}
+
+.editForm-style select {
+	padding: 3px;
+}
+
+.editForm-style span{
+	display: inline-block;
+	width: 120px;
+}
+
+.goneWrong{
+	color: red;
+	font-weight: bold;
+}
+
+#space {
+	height: 50px;
+}
+

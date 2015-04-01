@@ -1,0 +1,139 @@
+<!doctype html>
+<html ng-app="Console">
+<head>
+	<script type="text/javascript"	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+	<script type="text/javascript"	src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+	<h3>Column Master</h3>
+	<div id="columnMstr" ng-controller="ColumnMstrCtrl">
+		<script type="text/ng-template" id="addColumn.html">
+			<div>
+				<form name="addColumnForm" id="addColumn" novalidate>
+					<table>
+						<h3>Add Column</h3>
+						<tr>
+							<td><label>Column Name:</label></td>
+							<td class="addForm-style"><input type="text" name="columnName"
+							ng-model="columnName" ng-maxlength="15" /></td>
+							<td ng-show="addColumnForm.columnName.$error.maxlength" class="goneWrong">Name's too long.</td>
+						</tr>
+						<tr>
+							<td><label>Column Type:</label></td>
+							<td class="addForm-style">
+								<select name="columnType" ng-model="columnType">
+									<option value="" selected="selected">Select one</option>
+									<option value="Number">Number</option>
+									<option value="String">String</option>
+									<option value="Date">Date</option>
+									<option value="Boolean">Boolean</option>
+								</select>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><label>Editable:</label></td>
+							<td class="addForm-style">
+								<select name="editable"	ng-model="editable" 
+								ng-options="opt.value as opt.name for opt in [{ name: 'Yes', value: true }, { name: 'No', value: false } ]">
+									<option value="" selected="selected">Select one</option>
+								</select></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<button class="greyBtn" ng-click="ok()">Add Column</button>
+								<button class="greyBtn" ng-click="cancel()">Close without Adding</button>
+							</td>
+						</tr>
+					</table>
+				</form>     
+			</div>  
+    	</script>
+
+		<button class="greyBtn" ng-click="open('sm')">Add Column</button>
+		<button class="greyBtn" ng-click="remove()">Remove Column</button>
+		<table>
+			<tr>
+				<th></th>
+				<th>Column Name</th>
+				<th>Column Type</th>
+				<th>Editable</th>
+			</tr>
+			<tr ng-repeat="row in columnData">
+				<td><input type="checkbox" ng-model="row.checked"
+					ng-click="checkedIndex(row)"></td>
+				<td>{{row.columnName}}</td>
+				<td>{{row.columnType}}</td>
+				<td>{{row.editable | trueOrFalse}}</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="space"></div>
+
+	<h3>Result Data Grid</h3>
+	<div id="dataGrid" ng-controller="DataGridCtrl">
+		<form id="resultDataGrid" name="dataGridForm" novalidate>
+			<button class="greyBtn" ng-click="addRow()">Add Row</button>
+			<button class="greyBtn" ng-click="remove()">Delete Row</button>
+			<button class="greyBtn" ng-click="exportData()">Export to
+				JSON</button>
+			<table>
+
+				<tr>
+					<th></th>
+					<th ng-repeat="column in columnData">{{column.columnName}}</th>
+				</tr>
+				<tr ng-repeat="row in rowData">
+					<td><input type="checkbox" ng-model="row.checked"
+						ng-click="checkedIndex(row)"></td>
+					<td ng-repeat="column in columnData" class="editForm-style">
+						<div ng-switch on="column.columnType">
+							<div ng-switch-when="String">
+								<span ng-click="editing = column.editable" ng-hide="editing"
+									ng-bind="row[column.columnName]"></span> <input
+									ng-model="row[column.columnName]"
+									ng-show="{{row[column.columnName] | emptyOrNot}}" />
+							</div>
+							<div ng-switch-when="Number">
+								<span ng-click="editing = column.editable" ng-hide="editing"
+									ng-bind="row[column.columnName]"></span> <input name="numName"
+									ng-model="row[column.columnName]" ng-pattern="/^[0-9]{1,7}$/"
+									required ng-show="{{row[column.columnName] | emptyOrNot}}" />
+							</div>
+							<div ng-switch-when="Date">
+								<span ng-click="editing = column.editable " ng-hide="editing"
+									ng-bind="row[column.columnName]"></span> <input type="text"
+									datepicker-popup="yyyy/MM/dd" ng-model="row[column.columnName]"
+									is-open="mydp.opened" min-date="minDate"
+									max-date="'2015-06-22'" datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close" ng-click="openDP($event)"
+									ng-show="{{row[column.columnName] | emptyOrNot}}" />
+							</div>
+							<div ng-switch-when="Boolean">
+								<select ng-model="row[column.columnName]">
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+									<option value="" selected="selected">Select one</option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p class="goneWrong" ng-show="dataGridForm.numName.$error.pattern">Numbers
+				only, please.</p>
+		</form>
+	</div>
+
+	<script type="text/javascript" src="app/column.js"></script>
+	<script type="text/javascript" src="app/dataGrid.js"></script>
+	<script type="text/javascript" src="app/FileSaver.js"></script>
+	
+</body>
+</html>
